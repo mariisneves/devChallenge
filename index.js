@@ -10,6 +10,11 @@ var objectData = { // Criando objeto para formatar os dados
     invisible: false,
     see_all: false
 };
+var addressData = { // Criando objeto para formatar os dados de address
+    type: "",
+    tags: [],
+    address: ""
+}
 
 // Criando variável para contar a quantidade de linhas no csv
 file = fs.readFileSync("input.csv", "utf-8");
@@ -27,15 +32,28 @@ fs.createReadStream(__dirname + "/input.csv")
         csvData.push(dataRow);
     })
     .on("end", function () {
+        email(); // **em desenvolvimento**
         objeto(csvData, newCsvData);
     });
+
+// Função para separar os campos de email **em desenvolvimento**
+function email() {
+    let header = file.split(/\r?\n/)
+    let email = header[0].split(",");
+
+    for (var l = 0; l < email.length; l++) {
+        if (email[l].includes("email") == true) {
+            console.log(email[l]);
+        }
+    }
+}
 
 // Adicionando dados validados no objeto e, posteriormente, no novo array
 function objeto(csvData, newCsvData) {
     for (var i = 0; i < lines - 1; i++) {
         let j = i - 1;
         let obj = Object.create(objectData);
-        
+
         if (i == 0) { // Adicionando primeira entrada
             objectData.fullname = (csvData[i]["fullname"]);
             objectData.eid = csvData[i]["eid"];
